@@ -1,20 +1,20 @@
-# ZoroBot3 — Documentación Técnica
+# ZoroBot3 — Technical Documentation
 
-> Robot micromouse de alto rendimiento con STM32F4, encoders magnéticos de alta resolución, ventilador de succión y 4 sensores infrarrojos.
+> High-performance Micromouse robot featuring an STM32F4, high-resolution magnetic encoders, a suction fan, and four infrared sensors.
 
 ![ZoroBot3](assets/imgs/ZoroBot3_rev2_finish_3.jpg "ZoroBot3")
 
 ---
 
-## 🏆 Palmarés
+## 🏆 Achievements
 
 | 🥇 | 🥈 | 🥉 |
 |:--:|:--:|:--:|
 | **8** | **0** | **0** |
 
-### Resultados por Evento
+### Competition Results
 
-| Evento | Categoría | Posición | Año |
+| Event | Category | Placement | Year |
 |--------|-----------|:--------:|:---:|
 | <img src="assets/imgs/portugal-flag-xs.png" style="height:16px" alt="🇵🇹"/> **Micromouse Portuguese Contest** | Micromouse Classic | 🥇 | 2026 |
 | <img src="assets/imgs/romania-flag-xs.png" style="height:16px" alt="🇷🇴"/> **RoboChallenge** | Maze | 🥇 | 2025 |
@@ -29,68 +29,68 @@
 
 ## ⚙️ Hardware
 
-- **Microcontrolador**: STM32F405RGT6 @168MHz
-- **Driver de motores**: MP6551 @20kHz
-- **Giroscopio**: LSM6DSRTR 4000dps
-- **Encoders**: AS5145B-HSST (12-bit, lectura en cuadratura por hardware)
-- **Regulador**: CN3903 + LDO ME611C33M5G
-- **Sensores IR**: 4× SFH-4550 (emisores) + 4× ST-1KL3A (receptores) + TSSP77038TR (38kHz)
-- **Batería**: LiPo 2S 260mAh 35-70C Turnigy nano-tech
-- **Tracción**: 2× Motores Coreless 8520 7.4v, chasis de PCB, gomas Kyosho
+- **Microcontroller**: STM32F405RGT6 @ 168 MHz
+- **Motor driver**: MP6551 @ 20 kHz
+- **Gyroscope**: LSM6DSRTR, 4000 dps
+- **Encoders**: AS5145B-HSST (12-bit, hardware quadrature decoding)
+- **Regulator**: CN3903 + LDO ME611C33M5G
+- **IR sensors**: 4× SFH-4550 emitters + 4× ST-1KL3A receivers + TSSP77038TR (38 kHz)
+- **Battery**: Turnigy nano-tech LiPo 2S, 260 mAh, 35–70C
+- **Drive system**: 2× 8520 7.4 V coreless motors, PCB chassis, Kyosho tires
 
-![Chasis](assets/imgs/ZoroBot3_rev2_3d_model.png "ZoroBot3 - Chasis")
+![Chassis](assets/imgs/ZoroBot3_rev2_3d_model.png "ZoroBot3 - Chassis")
 
 ---
 
 ## 💻 Software
 
-- Programado en **C11** con VSCode, PlatformIO y **LibOpenCM3**.
-- Valores analógicos leídos por **DMA**, procesados cada **1 ms**.
-- Sensores IR gestionados por máquina de estados a **16 kHz** con filtrado de luz ambiente.
-- Encoders en **cuadratura por hardware** mediante timers, MPU por **SPI**.
-- **7 lazos PID en cascada** (velocidad lineal, angular, control frontal, control lateral) ejecutados cada 1 ms.
-- Reseteo de posición por pérdida de pared lateral.
-- Curvas con perfiles de giro de **aceleración senoidal**.
-- Algoritmos: seguimiento de pared, exploración, **Floodfill basado en pesos cinemáticos** y movimientos hardcodeados.
+- Developed in **C11** using VSCode, PlatformIO, and **LibOpenCM3**.
+- Analog values are read using **DMA** and processed every **1 ms**.
+- IR sensors are managed by a **16 kHz state machine** with ambient-light filtering.
+- Encoders use **hardware quadrature decoding** via timers; the IMU communicates over **SPI**.
+- **Seven cascaded PID loops** (linear speed, angular speed, front-wall, and side-wall control) run every 1 ms.
+- Position is reset when a side wall is lost.
+- Turns use **sinusoidal acceleration** profiles.
+- Algorithms include wall following, exploration, **kinematically weighted FloodFill**, and hardcoded movement sequences.
 
 ---
 
-## 📚 Documentación Detallada
+## 📚 Detailed Documentation
 
-- **[Hardware](01-hardware.md)** — MCU, sensores, motores, encoders, batería, chasis, versiones del robot
-- **[Arquitectura Software](02-software-architecture.md)** — Bucle principal, SysTick ISR, flujo de carrera, exploración
-- **[Sensores](03-sensors.md)** — Máquina de estados ADC, linealización, detección de paredes, histéresis
-- **[Movimiento](04-movement.md)** — Tipos de movimiento, perfiles de giro, speed run, wall loss correction
-- **[Floodfill](05-floodfill.md)** — Algoritmos BASIC/DIAGONAL/TIME_BASED, BFS, path following
-- **[Control PID](06-control-system.md)** — 7 lazos en cascada, anti-windup, compensación de batería
-- **[Menú](07-menu-system.md)** — Navegación, selección de algoritmo, configuración de velocidad
-- **[Debug](08-debug-system.md)** — LEDs, RGB, USART, funciones de debug
-- **[Calibración](09-calibration.md)** — Calibración frontal/lateral, giroscopio, persistencia en EEPROM
-- **[Scripts: Calibración Sensores](10-scripts-sensors.md)** — Herramienta Jupyter de perfiles de linealización IR y magics
-- **[EEPROM](11-eeprom.md)** — Almacenamiento, checksum, maze persistente
-- **[Encoders y Giroscopio](12-encoders-gyro.md)** — AS5145B-HSST, LSM6DSR, integración angular
-- **[Batería y LEDs](13-battery-leds.md)** — Monitorización de voltaje, divisor de tensión, LEDs de estado
-- **[Simulador MMSIM](14-simulator.md)** — API de paredes virtuales, estimación de tiempo
-- **[Cinemática](15-kinematics.md)** — Estrategias de velocidad, perfiles de aceleración, parámetros de giro
-- **[Scripts: Perfiles de Giro](16-scripts-turn-profiles.md)** — Generación offline de perfiles de giro sinusoidales
-- **[Problemas Conocidos](17-known-issues.md)** — Issues documentados con IDs, impacto y soluciones
+- **[Hardware](01-hardware.md)** — MCU, sensors, motors, encoders, battery, chassis, and robot revisions
+- **[Software Architecture](02-software-architecture.md)** — Main loop, SysTick ISR, race flow, and exploration
+- **[Sensors](03-sensors.md)** — ADC state machine, linearization, wall detection, and hysteresis
+- **[Movement](04-movement.md)** — Movement types, turn profiles, speed runs, and wall-loss correction
+- **[Floodfill](05-floodfill.md)** — BASIC/DIAGONAL/TIME_BASED algorithms, BFS, and path following
+- **[PID Control](06-control-system.md)** — Seven cascaded loops, anti-windup, and battery compensation
+- **[Menu](07-menu-system.md)** — Navigation, algorithm selection, and speed configuration
+- **[Debugging](08-debug-system.md)** — LEDs, RGB, USART, and debug functions
+- **[Calibration](09-calibration.md)** — Front/side sensor calibration, gyroscope, and EEPROM persistence
+- **[Scripts: Sensor Calibration](10-scripts-sensors.md)** — Jupyter tool for IR linearization profiles and magics
+- **[EEPROM](11-eeprom.md)** — Storage, checksum, and persistent maze data
+- **[Encoders and Gyroscope](12-encoders-gyro.md)** — AS5145B-HSST, LSM6DSR, and angular integration
+- **[Battery and LEDs](13-battery-leds.md)** — Voltage monitoring, voltage divider, and status LEDs
+- **[MMSIM Simulator](14-simulator.md)** — Virtual-wall API and time estimation
+- **[Kinematics](15-kinematics.md)** — Speed strategies, acceleration profiles, and turn parameters
+- **[Scripts: Turn Profiles](16-scripts-turn-profiles.md)** — Offline generation of sinusoidal turn profiles
+- **[Known Issues](17-known-issues.md)** — Documented issues, their impact, and proposed solutions
 
 ---
 
-## 🔧 Stack Tecnológico
+## 🔧 Technology Stack
 
-| Componente | Detalle |
+| Component | Details |
 |-----------|---------|
 | **MCU** | STM32F405RGT6 @ 168 MHz (ARM Cortex-M4F) |
 | **Framework** | LibOpenCM3 + PlatformIO |
-| **Lenguaje** | C11 |
-| **Compilador** | GCC ARM Embedded (arm-none-eabi-gcc) |
+| **Language** | C11 |
+| **Compiler** | GCC ARM Embedded (arm-none-eabi-gcc) |
 | **IDE** | VSCode |
-| **Control de versiones** | Git |
+| **Version control** | Git |
 
 ---
 
-## 🎥 Vídeos
+## 🎥 Videos
 
 ### Micromouse Portuguese Contest 2026 — 🥇
 <video src="https://github.com/user-attachments/assets/5a7cf803-e31e-463a-afa9-e5784b378937" width="50%" controls></video>
